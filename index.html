@@ -1,766 +1,123 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bag Full of Chips — No Air. All Chips.</title>
-  <meta name="description" content="Air is for breathing. Not for chip bags. Bag Full of Chips — No Air. All Chips." />
-  <meta name="theme-color" content="#0b1020" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bag Full of Chips</title>
 
-  <style>
-    :root{
-      --bg:#070b16;
-      --panel:rgba(255,255,255,.06);
-      --border:rgba(255,255,255,.10);
-      --text:#f2f5ff;
-      --muted:rgba(242,245,255,.72);
-      --hot1:#ff7a18;
-      --hot2:#a855f7;
-      --good:#22c55e;
-      --shadow: 0 18px 70px rgba(0,0,0,.45);
-      --radius: 22px;
-      --max: 1040px;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--text);
-      background:
-        radial-gradient(900px 520px at 12% 18%, rgba(255,122,24,.18), transparent 60%),
-        radial-gradient(900px 520px at 88% 18%, rgba(168,85,247,.15), transparent 60%),
-        radial-gradient(900px 520px at 52% 96%, rgba(34,197,94,.08), transparent 60%),
-        linear-gradient(180deg, #050814 0%, #070b16 55%, #050814 100%);
-      overflow-x:hidden;
-    }
-
-    a{color:inherit}
-    .container{max-width:var(--max); margin:0 auto; padding:0 20px;}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:14px 16px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      font-weight: 900;
-      text-decoration:none;
-      cursor:pointer;
-      transition: transform .08s ease, background .15s ease, border-color .15s ease;
-      user-select:none;
-      white-space:nowrap;
-      min-height:46px;
-    }
-    .btn:hover{background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.16)}
-    .btn:active{transform: translateY(1px)}
-    .btn.primary{
-      border-color: rgba(255,255,255,.14);
-      background: linear-gradient(90deg, rgba(255,122,24,.92), rgba(168,85,247,.82));
-      box-shadow: 0 20px 60px rgba(255,122,24,.16);
-    }
-    .btn.primary:hover{filter:saturate(1.05) brightness(1.03)}
-    .btn.small{padding:12px 14px; border-radius:14px; min-height:42px}
-    .pill{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 12px;
-      border-radius: 999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.06);
-      color: var(--muted);
-      font-weight: 900;
-      font-size: 12px;
-      letter-spacing:.3px;
-      text-transform: uppercase;
-    }
-    .dot{width:10px;height:10px;border-radius:99px;background: var(--good); box-shadow: 0 0 0 6px rgba(34,197,94,.12)}
-
-    /* Top bar */
-    header{
-      position: sticky; top:0; z-index: 40;
-      backdrop-filter: blur(10px);
-      background: rgba(7,11,22,.72);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 14px 0;
-      gap: 12px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      text-decoration:none;
-      font-weight: 950;
-      letter-spacing: -.2px;
-    }
-    .logo{
-      width: 34px; height: 34px; border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,122,24,.95), rgba(168,85,247,.82));
-      box-shadow: 0 16px 40px rgba(255,122,24,.14);
-    }
-    .brand small{display:block; color: var(--muted); font-weight: 800; font-size: 12px; margin-top:1px}
-    .nav-actions{display:flex; gap:10px; align-items:center}
-    .nav-links{display:flex; gap:14px; align-items:center}
-    .nav-links a{
-      color: var(--muted);
-      text-decoration:none;
-      font-weight: 900;
-      font-size: 13px;
-      padding: 10px 10px;
-      border-radius: 12px;
-    }
-    .nav-links a:hover{color: var(--text); background: rgba(255,255,255,.06)}
-    @media (max-width: 860px){
-      .nav-links{display:none}
-    }
-
-    /* Intro overlay (tornado) */
-    .intro{
-      position: fixed; inset:0;
-      display:grid; place-items:center;
-      background:
-        radial-gradient(900px 520px at 12% 18%, rgba(255,122,24,.22), transparent 60%),
-        radial-gradient(900px 520px at 88% 18%, rgba(168,85,247,.20), transparent 60%),
-        linear-gradient(180deg, rgba(5,8,20,.92), rgba(7,11,22,.92));
-      z-index: 200;
-      overflow:hidden;
-      transition: opacity .7s ease, visibility .7s ease;
-    }
-    .intro.hide{opacity:0; visibility:hidden; pointer-events:none}
-    .intro-inner{
-      position:relative;
-      width:min(920px, 92vw);
-      height:min(520px, 70vh);
-      border-radius: 28px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .intro-text{
-      position:absolute; left:22px; right:22px; bottom:18px;
-      display:flex; align-items:flex-end; justify-content:space-between; gap:14px; flex-wrap:wrap;
-    }
-    .intro-text h1{
-      margin:0;
-      font-size: clamp(26px, 3.4vw, 44px);
-      line-height: 1.05;
-      letter-spacing: -0.8px;
-    }
-    .intro-text p{
-      margin:6px 0 0;
-      color: var(--muted);
-      font-weight: 800;
-      max-width: 52ch;
-      line-height: 1.4;
-    }
-    .intro-hint{
-      color: rgba(242,245,255,.78);
-      font-weight: 950;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .35px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .pulse{
-      width:10px;height:10px;border-radius:99px;background: rgba(255,255,255,.75);
-      box-shadow: 0 0 0 0 rgba(255,255,255,.22);
-      animation: pulse 1.2s infinite;
-    }
-    @keyframes pulse{
-      0%{box-shadow: 0 0 0 0 rgba(255,255,255,.22)}
-      70%{box-shadow: 0 0 0 14px rgba(255,255,255,0)}
-      100%{box-shadow: 0 0 0 0 rgba(255,255,255,0)}
-    }
-
-    /* Tornado stack */
-    .tornado{
-      position:absolute; inset:0;
-      display:grid; place-items:center;
-      transform: translateY(-10px);
-    }
-    .tornado .stack{
-      position:relative;
-      width: min(520px, 72vw);
-      height: min(520px, 72vw);
-      max-height: 520px;
-      max-width: 520px;
-      filter: drop-shadow(0 28px 70px rgba(0,0,0,.55));
-    }
-
-    .bag{
-      position:absolute;
-      left:50%; top:50%;
-      width: 170px; height: 190px;
-      transform: translate(-50%, -50%);
-      border-radius: 22px;
-      border:1px solid rgba(255,255,255,.14);
-      background:
-        linear-gradient(90deg, rgba(255,122,24,.88), rgba(168,85,247,.78));
-      overflow:hidden;
-    }
-    .bag:before{
-      content:"";
-      position:absolute; inset:0;
-      background: repeating-linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.10) 10px, transparent 10px, transparent 22px);
-      opacity:.22;
-      mix-blend-mode: overlay;
-    }
-    .bag .label{
-      position:absolute; left:14px; right:14px; top:14px;
-      color:#0b1020;
-      font-weight: 1000;
-      text-transform: uppercase;
-      letter-spacing: .35px;
-      line-height: 1.05;
-      text-shadow: 0 1px 0 rgba(255,255,255,.25);
-      font-size: 12px;
-    }
-    .bag .label b{
-      display:block;
-      font-size: 18px;
-      letter-spacing: -0.4px;
-      margin-top: 4px;
-    }
-    .bag .badge{
-      position:absolute; right:12px; top:12px;
-      font-size: 11px;
-      font-weight: 1000;
-      letter-spacing:.3px;
-      text-transform: uppercase;
-      color: var(--text);
-      background: rgba(11,16,32,.72);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 999px;
-      padding: 7px 10px;
-      display:flex; gap:8px; align-items:center;
-    }
-    .bag .badge i{
-      width: 9px; height: 9px; border-radius: 99px; background: var(--good);
-      box-shadow: 0 0 0 6px rgba(34,197,94,.12);
-      display:inline-block;
-    }
-    .bag .window{
-      position:absolute;
-      left:12px; right:12px;
-      bottom:12px;
-      height: 78px;
-      border-radius: 16px;
-      border: 1px solid rgba(11,16,32,.20);
-      background: rgba(255,255,255,.20);
-      backdrop-filter: blur(6px);
-      overflow:hidden;
-    }
-    .chips{
-      position:absolute; inset:0;
-      display:grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap:7px;
-      padding: 10px;
-      opacity:.95;
-      transform: translateY(2px);
-    }
-    .chip{
-      width:100%; aspect-ratio: 1/1;
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.30), transparent 55%),
-        linear-gradient(180deg, rgba(255,224,160,.95), rgba(255,182,86,.82));
-      border: 1px solid rgba(11,16,32,.16);
-      box-shadow: 0 10px 22px rgba(0,0,0,.16);
-    }
-
-    /* Twirling positions */
-    .bag.b1{ --z: 1; --r: 0deg;   --s: 1.05; --y: -100px; --x: 0px; }
-    .bag.b2{ --z: 2; --r: 55deg;  --s: .95;  --y: -55px;  --x: 90px;}
-    .bag.b3{ --z: 3; --r: 115deg; --s: .85;  --y: -10px;  --x: 120px;}
-    .bag.b4{ --z: 4; --r: 180deg; --s: .78;  --y: 45px;   --x: 55px;}
-    .bag.b5{ --z: 5; --r: 245deg; --s: .72;  --y: 90px;   --x: -55px;}
-    .bag.b6{ --z: 6; --r: 305deg; --s: .68;  --y: 125px;  --x: -120px;}
-    .bag.b7{ --z: 7; --r: 15deg;  --s: .62;  --y: 160px;  --x: -35px;}
-
-    .bag.twirl{
-      transform:
-        translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
-        rotate(var(--r))
-        scale(var(--s));
-      z-index: var(--z);
-      animation: orbit 1.35s ease-in-out infinite;
-      animation-delay: calc(var(--z) * -120ms);
-    }
-    @keyframes orbit{
-      0%{
-        transform:
-          translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
-          rotate(var(--r))
-          scale(var(--s));
-        filter: brightness(1);
-      }
-      50%{
-        transform:
-          translate(calc(-50% + (var(--x) * .72)), calc(-50% + (var(--y) * .72)))
-          rotate(calc(var(--r) + 20deg))
-          scale(calc(var(--s) * 1.02));
-        filter: brightness(1.04);
-      }
-      100%{
-        transform:
-          translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
-          rotate(var(--r))
-          scale(var(--s));
-        filter: brightness(1);
-      }
-    }
-
-    .spin{
-      position:absolute; inset:-40px;
-      animation: spin 1.05s linear infinite;
-      opacity:.95;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .vortex{
-      position:absolute; inset:0;
-      background:
-        radial-gradient(240px 240px at 50% 40%, rgba(255,255,255,.08), transparent 60%),
-        radial-gradient(320px 320px at 50% 50%, rgba(255,122,24,.10), transparent 65%),
-        radial-gradient(420px 420px at 50% 56%, rgba(168,85,247,.10), transparent 70%);
-      mix-blend-mode: screen;
-      opacity:.8;
-      filter: blur(0.2px);
-      animation: vortex 1.2s ease-in-out infinite;
-    }
-    @keyframes vortex{
-      0%,100%{transform: scale(1)}
-      50%{transform: scale(1.03)}
-    }
-
-    /* Main page */
-    main{opacity:0; transform: translateY(8px); transition: opacity .8s ease, transform .8s ease;}
-    body.ready main{opacity:1; transform: translateY(0)}
-    .hero{
-      padding: 42px 0 26px;
-    }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 18px;
-      align-items: center;
-    }
-    @media (max-width: 960px){
-      .hero-grid{grid-template-columns:1fr}
-    }
-    .hero h1{
-      margin: 12px 0 10px;
-      font-size: clamp(34px, 4.2vw, 62px);
-      line-height: 0.98;
-      letter-spacing: -1.1px;
-    }
-    .hero .tagline{
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-weight: 850;
-      font-size: 15px;
-      line-height: 1.45;
-      max-width: 56ch;
-    }
-    .hero .cta{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .hero .mini{
-      margin-top: 12px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      color: var(--muted);
-      font-weight: 900;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .35px;
-    }
-
-    /* Right-side hero bag (single, clean) */
-    .hero-card{
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      padding: 16px;
-    }
-    .hero-bag-wrap{
-      position:relative;
-      border-radius: 22px;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(240px 180px at 30% 20%, rgba(255,122,24,.18), transparent 60%),
-        radial-gradient(240px 180px at 70% 30%, rgba(168,85,247,.16), transparent 60%),
-        rgba(11,16,32,.35);
-      height: 320px;
-      display:grid;
-      place-items:center;
-      overflow:hidden;
-    }
-    .hero-bag-wrap .bag{
-      position:relative;
-      left:auto; top:auto;
-      transform:none;
-      width: 240px;
-      height: 265px;
-      animation: float 2.6s ease-in-out infinite;
-    }
-    @keyframes float{
-      0%,100%{transform: translateY(0)}
-      50%{transform: translateY(-8px)}
-    }
-
-    /* Sections minimal */
-    section{padding: 18px 0}
-    .row{
-      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
-      margin: 10px 0 10px;
-    }
-    .row h2{
-      margin:0;
-      font-size: 16px;
-      letter-spacing: .1px;
-      color: rgba(242,245,255,.88);
-      text-transform: uppercase;
-      font-weight: 1000;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-    @media (max-width: 920px){ .grid{grid-template-columns:1fr} }
-    .card{
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
-      padding: 14px;
-      box-shadow: 0 14px 55px rgba(0,0,0,.25);
-    }
-    .card b{display:block; font-size: 14px; font-weight: 1000; letter-spacing: .2px}
-    .card span{display:block; margin-top:6px; color: var(--muted); font-weight: 800; line-height: 1.35}
-    .flavor{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    .chipdot{
-      width: 14px; height: 14px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: linear-gradient(180deg, rgba(255,224,160,.95), rgba(255,182,86,.82));
-      box-shadow: 0 10px 22px rgba(0,0,0,.16);
-      flex:0 0 auto;
-    }
-    .label-hot{color: rgba(255,122,24,.95)}
-    .label-fit{color: rgba(34,197,94,.95)}
-    .label-purple{color: rgba(168,85,247,.95)}
-
-    /* Order section */
-    .order{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      align-items:stretch;
-    }
-    @media (max-width: 920px){ .order{grid-template-columns:1fr} }
-    .price{
-      display:flex; align-items:baseline; gap:8px;
-      margin-top: 10px;
-    }
-    .price b{font-size: 26px; letter-spacing:-.4px}
-    .price small{color: var(--muted); font-weight: 900}
-    .note{
-      margin-top: 10px;
-      color: var(--muted);
-      font-weight: 800;
-      font-size: 12px;
-      line-height: 1.35;
-    }
-    .divider{
-      height: 1px;
-      background: rgba(255,255,255,.10);
-      margin: 14px 0;
-    }
-
-    footer{
-      padding: 22px 0 30px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      color: var(--muted);
-      font-weight: 800;
-      font-size: 12px;
-    }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      .spin, .bag.twirl, .vortex, .hero-bag-wrap .bag{animation:none !important}
-      main{transition:none}
-      .intro{display:none}
-      body{scroll-behavior:auto}
-    }
-  </style>
+<style>
+:root{
+  --bg:#000;
+  --fg:#fff;
+  --muted:#9ca3af;
+  --accent:#ff4d00;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+.wrap{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:32px 16px;
+}
+h1{
+  font-size:clamp(42px,7vw,88px);
+  line-height:0.95;
+  letter-spacing:-2px;
+  margin:0 0 18px;
+}
+.tag{
+  font-size:14px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:28px;
+}
+.product{
+  width:260px;
+  height:320px;
+  border-radius:22px;
+  background:linear-gradient(135deg,#ff4d00,#ff0080);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:32px;
+  animation:drop 0.9s ease forwards;
+}
+.product span{
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+@keyframes drop{
+  from{transform:translateY(-120px) rotate(-8deg);opacity:0}
+  to{transform:translateY(0) rotate(0);opacity:1}
+}
+.actions{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.btn{
+  padding:16px 26px;
+  border-radius:999px;
+  font-weight:900;
+  letter-spacing:0.5px;
+  border:2px solid var(--fg);
+}
+.btn.primary{
+  background:var(--fg);
+  color:var(--bg);
+}
+.btn.secondary{
+  background:transparent;
+  color:var(--fg);
+}
+.footer{
+  position:absolute;
+  bottom:18px;
+  font-size:12px;
+  color:var(--muted);
+}
+</style>
 </head>
 
 <body>
-  <!-- Intro Tornado (auto hides) -->
-  <div class="intro" id="intro" aria-hidden="true">
-    <div class="intro-inner">
-      <div class="tornado">
-        <div class="stack">
-          <div class="vortex"></div>
-          <div class="spin">
-            <div class="bag twirl b1">
-              <div class="badge"><i></i> Full Bag</div>
-              <div class="label">Bag Full of Chips<b>ALL CHIPS.</b></div>
-              <div class="window"><div class="chips"></div></div>
-            </div>
-            <div class="bag twirl b2">
-              <div class="badge"><i></i> Full Bag</div>
-              <div class="label">Bag Full of Chips<b>NO AIR.</b></div>
-              <div class="window"><div class="chips"></div></div>
-            </div>
-            <div class="bag twirl b3">
-              <div class="badge"><i></i> Full Bag</div>
-              <div class="label">Bag Full of Chips<b>ALL FLAIR.</b></div>
-              <div class="window"><div class="chips"></div></div>
-            </div>
-            <div class="bag twirl b4">
-              <div class="badge"><i></i> Full Bag</div>
-              <div class="label">Bag Full of Chips<b>FULL BAG.</b></div>
-              <div class="window"><div class="chips"></div></div>
-            </div>
-            <div class="bag twirl b5">
-              <div class="badge"><i></i> Full Bag</div>
-              <div class="label">Bag Full of Chips<b>NO SCAM.</b></div>
-              <div class="window"><div class="chips"></div></div>
-            </div>
-            <div class="bag twirl b6">
-              <div class="badge"><i></i> Full Bag</div>
-              <div class="label">Bag Full of Chips<b>CRUNCH.</b></div>
-              <div class="window"><div class="chips"></div></div>
-            </div>
-            <div class="bag twirl b7">
-              <div class="badge"><i></i> Full Bag</div>
-              <div class="label">Bag Full of Chips<b>LET’S GO.</b></div>
-              <div class="window"><div class="chips"></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="intro-text">
-        <div>
-          <div class="pill"><span class="dot"></span> FULL BAG ENERGY</div>
-          <h1>Air is for breathing.<br/>Not for chip bags.</h1>
-          <p>No talking. No essays. Just chips. Full bag. Every time.</p>
-        </div>
-        <div class="intro-hint"><span class="pulse"></span> loading</div>
-      </div>
-    </div>
+<div class="wrap">
+  <div class="tag">No air. All chips.</div>
+
+  <h1>
+    Air is for breathing.<br>
+    Not for chip bags.
+  </h1>
+
+  <div class="product">
+    <span>Bag Full<br>of Chips</span>
   </div>
 
-  <header>
-    <div class="container">
-      <div class="nav">
-        <a class="brand" href="#top" aria-label="Bag Full of Chips home">
-          <span class="logo" aria-hidden="true"></span>
-          <span>
-            Bag Full of Chips
-            <small>No Air. All Chips.</small>
-          </span>
-        </a>
+  <div class="actions">
+    <!-- 1st click -->
+    <a class="btn primary" href="#buy">Buy</a>
+    <!-- optional 2nd -->
+    <a class="btn secondary" href="#buy">Flavors</a>
+  </div>
 
-        <div class="nav-links" aria-label="Site">
-          <a href="#flavors">Flavors</a>
-          <a href="#order">Order</a>
-        </div>
+  <div class="footer">
+    © Bag Full of Chips
+  </div>
+</div>
 
-        <div class="nav-actions">
-          <a class="btn small" href="#order">Order</a>
-          <!-- Replace the link below with your real checkout link later -->
-          <a class="btn primary small" href="#order">Buy now</a>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <div id="top" class="hero">
-      <div class="container">
-        <div class="hero-grid">
-          <div>
-            <div class="pill"><span class="dot"></span> NO AIR TAX</div>
-
-            <h1>Air is for breathing.<br/>Not for chip bags.</h1>
-
-            <p class="tagline">
-              We sell chips. Not air. Full bag energy — every time.
-            </p>
-
-            <div class="cta">
-              <!-- 1 click to "order section"; 2nd click can be "Buy" button there -->
-              <a class="btn primary" href="#order">Order now</a>
-              <a class="btn" href="#flavors">See flavors</a>
-            </div>
-
-            <div class="mini">
-              <span>✅ full bag</span>
-              <span>🔥 spicy line</span>
-              <span>🌿 baked option</span>
-            </div>
-          </div>
-
-          <div class="hero-card">
-            <div class="hero-bag-wrap" aria-label="Product visual">
-              <div class="bag" aria-hidden="true">
-                <div class="badge"><i></i> Full Bag</div>
-                <div class="label">Bag Full of Chips<b>NO AIR.</b></div>
-                <div class="window"><div class="chips" id="heroChips"></div></div>
-              </div>
-            </div>
-
-            <div class="note">
-              Minimal site. Fast order. Replace “Buy” links with your real checkout later.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <section id="flavors">
-      <div class="container">
-        <div class="row">
-          <h2>Flavors</h2>
-          <span class="pill">3 starters</span>
-        </div>
-
-        <div class="grid">
-          <div class="card">
-            <div class="flavor">
-              <b class="label-hot">🔥 Volcano Lime</b>
-              <span class="chipdot" aria-hidden="true"></span>
-            </div>
-            <span>Hot. Tangy. Loud.</span>
-          </div>
-
-          <div class="card">
-            <div class="flavor">
-              <b class="label-purple">🌶️ Smoky Chili</b>
-              <span class="chipdot" aria-hidden="true"></span>
-            </div>
-            <span>Deep heat. Big crunch.</span>
-          </div>
-
-          <div class="card">
-            <div class="flavor">
-              <b class="label-fit">🌿 Baked Crunch</b>
-              <span class="chipdot" aria-hidden="true"></span>
-            </div>
-            <span>Cleaner vibe. Still hits.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="order">
-      <div class="container">
-        <div class="row">
-          <h2>Order</h2>
-          <span class="pill">1–2 clicks</span>
-        </div>
-
-        <div class="order">
-          <div class="card">
-            <b>Single Bag</b>
-            <div class="price">
-              <b>$3.99</b>
-              <small>suggested</small>
-            </div>
-            <div class="note">Replace this button with your real Shopify/Stripe checkout link.</div>
-            <div class="divider"></div>
-            <!-- CLICK #2 to purchase (once you replace href with real checkout URL) -->
-            <a class="btn primary" href="https://example.com/checkout-single" target="_blank" rel="noopener">Buy single</a>
-          </div>
-
-          <div class="card">
-            <b>3-Pack (Best)</b>
-            <div class="price">
-              <b>$10.99</b>
-              <small>suggested</small>
-            </div>
-            <div class="note">Same: replace link with real checkout. This keeps it 1–2 clicks total.</div>
-            <div class="divider"></div>
-            <a class="btn primary" href="https://example.com/checkout-3pack" target="_blank" rel="noopener">Buy 3-pack</a>
-          </div>
-        </div>
-
-        <div class="note" style="margin-top:12px">
-          IMPORTANT: Right now, “Buy” goes to placeholder links. When you have Shopify/Stripe, swap the two URLs above and you’re live.
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <div class="container">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-          <div>
-            <b style="color:rgba(242,245,255,.9)">Bag Full of Chips</b><br/>
-            <span>Air is for breathing. Not for chip bags.</span>
-          </div>
-          <div>
-            <span>© <span id="year"></span></span>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <script>
-    // Fill chip "window" dots quickly
-    function fillChips(el, count){
-      if(!el) return;
-      const frag = document.createDocumentFragment();
-      for(let i=0;i<count;i++){
-        const d = document.createElement('div');
-        d.className = 'chip';
-        frag.appendChild(d);
-      }
-      el.appendChild(frag);
-    }
-
-    // Fill all windows (intro + hero)
-    document.querySelectorAll('.chips').forEach((node) => fillChips(node, 24));
-    fillChips(document.getElementById('heroChips'), 30);
-
-    // Intro auto-hide after short show (tornado -> site)
-    const intro = document.getElementById('intro');
-
-    // If user prefers reduced motion, skip intro.
-    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function showSite(){
-      document.body.classList.add('ready');
-      if(intro) intro.classList.add('hide');
-    }
-
-    if(reduceMotion){
-      showSite();
-    }else{
-      // Show tornado for ~1.6s then reveal site
-      window.addEventListener('load', () => {
-        setTimeout(showSite, 1600);
-      });
-      // Safety: reveal anyway
-      setTimeout(showSite, 2600);
-    }
-
-    // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
