@@ -1,1 +1,931 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bag Full of Chips — No Air. All Chips.</title>
+  <meta name="description" content="Bag Full of Chips: the snack brand that actually fills the bag. Bold spicy flavors + a better-for-you line. No air. All chips." />
+  <meta name="theme-color" content="#0f172a" />
 
+  <style>
+    :root{
+      --bg:#0b1220;
+      --panel:#0f172a;
+      --card:#111c33;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --brand:#f97316;    /* spicy orange */
+      --brand2:#a855f7;   /* neon purple */
+      --good:#22c55e;
+      --border:rgba(148,163,184,.18);
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 1120px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(900px 520px at 14% 12%, rgba(249,115,22,.22), transparent 55%),
+        radial-gradient(900px 520px at 86% 18%, rgba(168,85,247,.18), transparent 55%),
+        radial-gradient(900px 520px at 52% 96%, rgba(34,197,94,.10), transparent 55%),
+        linear-gradient(180deg, #070b16 0%, #0b1220 45%, #070b16 100%);
+    }
+
+    a{color:inherit}
+    .container{max-width:var(--max); margin:0 auto; padding:0 20px;}
+    .skip{position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden;}
+    .skip:focus{left:20px; top:20px; width:auto; height:auto; padding:10px 12px; background:#111c33; border:1px solid var(--border); border-radius:12px;}
+
+    /* Top bar */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,18,32,.72);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; text-decoration:none;
+      min-width: 220px;
+    }
+    .logo{
+      width:36px; height:36px; border-radius:12px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(249,115,22,.95), rgba(168,85,247,.8)),
+        linear-gradient(135deg, rgba(34,197,94,.3), transparent);
+      box-shadow: 0 10px 30px rgba(249,115,22,.18);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .brand strong{letter-spacing:.2px}
+    .brand small{display:block; color:var(--muted); font-weight:600; letter-spacing:.2px; margin-top:1px}
+    nav ul{list-style:none; display:flex; gap:18px; margin:0; padding:0; align-items:center}
+    nav a{
+      text-decoration:none; color:var(--muted); font-weight:700; font-size:14px;
+      padding:10px 10px; border-radius:12px;
+    }
+    nav a:hover{color:var(--text); background: rgba(148,163,184,.08)}
+    .nav-right{display:flex; gap:10px; align-items:center; justify-content:flex-end; min-width:220px}
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:11px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(148,163,184,.08);
+      color:var(--text);
+      font-weight:800;
+      text-decoration:none;
+      cursor:pointer;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:hover{background: rgba(148,163,184,.13); border-color: rgba(255,255,255,.18)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(249,115,22,.95), rgba(168,85,247,.85));
+      border-color: rgba(255,255,255,.18);
+      box-shadow: 0 18px 60px rgba(249,115,22,.20);
+    }
+    .btn.primary:hover{filter:saturate(1.05) brightness(1.03)}
+    .btn.ghost{background:transparent}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(148,163,184,.06);
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:.2px;
+    }
+    .dot{width:8px;height:8px;border-radius:99px;background:var(--good); box-shadow:0 0 0 5px rgba(34,197,94,.10)}
+
+    /* Mobile nav */
+    .menu-btn{display:none}
+    .mobile-panel{display:none; border-top:1px solid var(--border); padding:10px 0 16px}
+    .mobile-panel a{display:block; padding:12px 10px; border-radius:12px; color:var(--muted); text-decoration:none; font-weight:800}
+    .mobile-panel a:hover{background: rgba(148,163,184,.08); color:var(--text)}
+    @media (max-width: 860px){
+      nav ul{display:none}
+      .menu-btn{display:inline-flex}
+      .nav-right{min-width:auto}
+      .brand{min-width:auto}
+      .mobile-panel{display:none}
+      header[data-open="true"] .mobile-panel{display:block}
+    }
+
+    /* Hero */
+    .hero{
+      padding: 58px 0 28px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:26px;
+      align-items:stretch;
+    }
+    @media (max-width: 960px){
+      .hero-grid{grid-template-columns:1fr; }
+    }
+    h1{
+      margin:14px 0 10px;
+      font-size: clamp(34px, 3.7vw, 54px);
+      line-height:1.04;
+      letter-spacing:-.8px;
+    }
+    .sub{
+      color: var(--muted);
+      font-weight:650;
+      font-size: 16px;
+      line-height:1.6;
+      max-width: 62ch;
+      margin: 0 0 18px;
+    }
+    .hero-cta{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .metrics{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 18px;
+    }
+    .kpi{
+      flex: 1 1 170px;
+      background: rgba(15,23,42,.55);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 14px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+    }
+    .kpi b{display:block; font-size:16px; letter-spacing:.2px}
+    .kpi span{color:var(--muted); font-weight:750; font-size:13px}
+    .panel{
+      background: rgba(15,23,42,.62);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panel .panel-hd{
+      padding:16px 16px 12px;
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      border-bottom:1px solid var(--border);
+      background: rgba(17,28,51,.45);
+    }
+    .panel .panel-hd strong{font-size:14px; letter-spacing:.2px}
+    .panel .panel-hd small{color:var(--muted); font-weight:800}
+    .panel .panel-bd{padding:16px}
+
+    /* “Bag” mock */
+    .bag{
+      position:relative;
+      height: 360px;
+      border-radius: 26px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(140px 120px at 25% 20%, rgba(249,115,22,.35), transparent 60%),
+        radial-gradient(160px 140px at 75% 30%, rgba(168,85,247,.30), transparent 60%),
+        linear-gradient(180deg, rgba(17,28,51,.60) 0%, rgba(15,23,42,.85) 55%, rgba(10,16,30,.90) 100%);
+      box-shadow: 0 26px 80px rgba(0,0,0,.45);
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+    }
+    .bag-inner{
+      width:min(290px, 86%);
+      height:min(315px, 92%);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        linear-gradient(90deg, rgba(249,115,22,.75), rgba(168,85,247,.65)),
+        radial-gradient(120px 120px at 30% 25%, rgba(255,255,255,.20), transparent 60%);
+      position:relative;
+      overflow:hidden;
+      transform: rotate(-2deg);
+    }
+    .bag-inner:before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.10) 10px, transparent 10px, transparent 22px);
+      opacity:.25;
+      mix-blend-mode: overlay;
+    }
+    .bag-title{
+      position:absolute; left:16px; right:16px; top:16px;
+      color:#0b1220;
+      font-weight:1000;
+      letter-spacing:-.3px;
+      line-height:1.05;
+      text-transform:uppercase;
+      text-shadow: 0 1px 0 rgba(255,255,255,.35);
+    }
+    .bag-title span{display:block; font-size:12px; font-weight:950; letter-spacing:.9px; opacity:.85}
+    .bag-title b{display:block; font-size:22px}
+    .bag-window{
+      position:absolute;
+      left:16px; right:16px;
+      bottom:16px;
+      height: 130px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,18,32,.25);
+      background: rgba(255,255,255,.22);
+      backdrop-filter: blur(6px);
+      overflow:hidden;
+    }
+    .chips{
+      position:absolute; inset:0;
+      display:grid; grid-template-columns: repeat(7, 1fr);
+      gap:8px;
+      padding: 14px;
+      transform: translateY(4px);
+    }
+    .chip{
+      width:100%; aspect-ratio: 1/1;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.30), transparent 55%),
+        radial-gradient(circle at 55% 60%, rgba(255,255,255,.14), transparent 60%),
+        linear-gradient(180deg, rgba(255,224,160,.95), rgba(255,182,86,.85));
+      border: 1px solid rgba(11,18,32,.16);
+      box-shadow: 0 10px 22px rgba(0,0,0,.18);
+      transform: rotate(var(--r, 0deg));
+      filter: saturate(1.05);
+    }
+    .bag-badge{
+      position:absolute; right:14px; top:14px;
+      background: rgba(11,18,32,.78);
+      border:1px solid rgba(255,255,255,.14);
+      color: var(--text);
+      font-weight:950;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size:12px;
+      letter-spacing:.4px;
+      text-transform:uppercase;
+    }
+    .bag-badge i{
+      width:10px; height:10px; display:inline-block; border-radius:99px; margin-right:8px;
+      background: var(--good);
+      box-shadow: 0 0 0 6px rgba(34,197,94,.12);
+      vertical-align: -1px;
+    }
+
+    /* Sections */
+    section{padding: 34px 0}
+    .section-hd{
+      display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+    .section-hd h2{
+      margin:0;
+      font-size: 22px;
+      letter-spacing:-.2px;
+    }
+    .section-hd p{margin:0; color:var(--muted); font-weight:700; max-width: 70ch}
+
+    .grid-3{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
+    @media (max-width: 960px){ .grid-3{grid-template-columns:1fr} }
+
+    .card{
+      background: rgba(15,23,42,.58);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 16px 55px rgba(0,0,0,.25);
+      padding: 16px;
+    }
+    .card h3{margin: 8px 0 6px; font-size:16px}
+    .card p{margin:0; color:var(--muted); font-weight:650; line-height:1.55}
+    .icon{
+      width:40px; height:40px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      display:grid; place-items:center;
+      background: rgba(148,163,184,.08);
+      font-weight:1000;
+    }
+
+    /* Product cards */
+    .products{display:grid; grid-template-columns: repeat(2, 1fr); gap:14px}
+    @media (max-width: 960px){ .products{grid-template-columns:1fr} }
+    .prod{
+      display:grid;
+      grid-template-columns: 1fr 220px;
+      gap:14px;
+      align-items:stretch;
+    }
+    @media (max-width: 720px){ .prod{grid-template-columns:1fr} }
+    .prod .shot{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(140px 120px at 25% 20%, rgba(249,115,22,.22), transparent 60%),
+        radial-gradient(160px 140px at 75% 30%, rgba(168,85,247,.18), transparent 60%),
+        linear-gradient(180deg, rgba(17,28,51,.55) 0%, rgba(15,23,42,.85) 80%);
+      overflow:hidden;
+      position:relative;
+      min-height: 180px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.22);
+    }
+    .prod .shot .tag{
+      position:absolute; left:12px; top:12px;
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(11,18,32,.65);
+      font-weight:900;
+      font-size:12px;
+      letter-spacing:.2px;
+      text-transform:uppercase;
+    }
+    .prod .shot .tag.hot{border-color: rgba(249,115,22,.35)}
+    .prod .shot .tag.fit{border-color: rgba(34,197,94,.35)}
+    .prod .shot .flavor{
+      position:absolute; left:12px; right:12px; bottom:12px;
+      background: rgba(11,18,32,.72);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 10px 10px;
+    }
+    .prod .shot .flavor b{display:block; font-size:14px}
+    .prod .shot .flavor span{display:block; color:var(--muted); font-weight:750; font-size:12px; margin-top:2px}
+
+    .list{margin:10px 0 0; padding:0; list-style:none; display:grid; gap:8px}
+    .list li{
+      display:flex; gap:10px; align-items:flex-start;
+      color: var(--muted);
+      font-weight:650;
+      line-height:1.45;
+    }
+    .check{
+      width:18px; height:18px; border-radius: 6px;
+      background: rgba(34,197,94,.18);
+      border: 1px solid rgba(34,197,94,.35);
+      flex:0 0 auto;
+      display:grid; place-items:center;
+      color: rgba(34,197,94,.95);
+      font-weight:1000;
+      font-size:12px;
+      margin-top:2px;
+    }
+
+    /* Forms */
+    form{margin:0}
+    .form-row{display:flex; gap:10px; flex-wrap:wrap}
+    input, textarea, select{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(11,18,32,.45);
+      color: var(--text);
+      font-weight:650;
+      outline:none;
+    }
+    input::placeholder, textarea::placeholder{color: rgba(148,163,184,.75)}
+    input:focus, textarea:focus, select:focus{
+      border-color: rgba(249,115,22,.45);
+      box-shadow: 0 0 0 4px rgba(249,115,22,.12);
+    }
+    .two{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+    @media (max-width: 860px){ .two{grid-template-columns:1fr} }
+
+    /* FAQ */
+    details{
+      background: rgba(15,23,42,.58);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 12px;
+    }
+    details + details{margin-top:10px}
+    summary{
+      cursor:pointer;
+      font-weight:900;
+      color: var(--text);
+      list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:10px 0 0; color: var(--muted); font-weight:650; line-height:1.55}
+
+    /* Footer */
+    footer{
+      border-top:1px solid var(--border);
+      padding: 22px 0 30px;
+      color: var(--muted);
+      font-weight:650;
+    }
+    .footer-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr .8fr;
+      gap:14px;
+    }
+    @media (max-width: 960px){ .footer-grid{grid-template-columns:1fr} }
+    .fine{font-size:12px; opacity:.9; line-height:1.55}
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(17,28,51,.92);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 16px;
+      padding: 12px 14px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.40);
+      display:none;
+      gap:10px;
+      align-items:flex-start;
+      max-width: min(680px, calc(100% - 28px));
+      z-index: 100;
+    }
+    .toast b{display:block}
+    .toast span{color:var(--muted); font-weight:650}
+    .toast.show{display:flex}
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header id="header">
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#top" aria-label="Bag Full of Chips home">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <strong>Bag Full of Chips</strong>
+            <small>No Air. All Chips.</small>
+          </div>
+        </a>
+
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="#promise">The Promise</a></li>
+            <li><a href="#products">Flavors</a></li>
+            <li><a href="#stores">Local Stores</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-right">
+          <button class="btn ghost menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobilePanel">Menu</button>
+          <a class="btn" href="#stores">Get it locally</a>
+          <a class="btn primary" href="#notify">Get launch updates</a>
+        </div>
+      </div>
+
+      <div class="mobile-panel" id="mobilePanel" aria-label="Mobile menu">
+        <a href="#promise">The Promise</a>
+        <a href="#products">Flavors</a>
+        <a href="#stores">Local Stores</a>
+        <a href="#faq">FAQ</a>
+        <a href="#notify">Launch updates</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <div id="top" class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="pill"><span class="dot" aria-hidden="true"></span> Full-bag guarantee concept</div>
+            <h1>Revolutionize the crunch industry.</h1>
+            <p class="sub">
+              Every snack bag should be honest. We make bold, Taki-style heat and a better-for-you line —
+              and we actually fill the bag with chips. No “air tax.”
+            </p>
+
+            <div class="hero-cta">
+              <a class="btn primary" href="#products">See flavors</a>
+              <a class="btn" href="#promise">How we prove it</a>
+              <a class="btn ghost" href="#notify">Notify me at launch</a>
+            </div>
+
+            <div class="metrics" role="list" aria-label="Highlights">
+              <div class="kpi" role="listitem">
+                <b>Full-bag concept</b>
+                <span>Package window + fill-line + “No Air” badge</span>
+              </div>
+              <div class="kpi" role="listitem">
+                <b>Teen-first brand</b>
+                <span>Fun, loud packaging that pops on shelves</span>
+              </div>
+              <div class="kpi" role="listitem">
+                <b>Two lines</b>
+                <span>🔥 Heat + 🌿 Better-for-you</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="panel" aria-label="Packaging preview">
+            <div class="panel-hd">
+              <div>
+                <strong>Packaging direction</strong><br />
+                <small>Window shows chips before purchase</small>
+              </div>
+              <span class="pill">Prototype</span>
+            </div>
+
+            <div class="panel-bd">
+              <div class="bag" aria-hidden="true">
+                <div class="bag-inner">
+                  <div class="bag-badge"><i></i> Full Bag</div>
+                  <div class="bag-title">
+                    <span>Bag Full of Chips</span>
+                    <b>All Flair.</b>
+                  </div>
+
+                  <div class="bag-window" title="Clear window concept">
+                    <div class="chips" id="chipsGrid"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top:12px; color:var(--muted); font-weight:700; line-height:1.55; font-size:13px;">
+                A clear window (or transparent lower panel) + printed fill-line makes “bag full of chips” obvious at a glance.
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <section id="promise">
+      <div class="container">
+        <div class="section-hd">
+          <h2>The “Bag Full” Promise</h2>
+          <p>How customers can trust it before they buy — and how you keep costs controlled.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="icon" aria-hidden="true">👀</div>
+            <h3>See it</h3>
+            <p>Use a clear window or transparent bottom panel. No guessing. Chips are visible on shelf.</p>
+          </div>
+
+          <div class="card">
+            <div class="icon" aria-hidden="true">📏</div>
+            <h3>Measure it</h3>
+            <p>Print a fill-line (like a beverage bottle). “Filled to here” becomes the brand’s signature.</p>
+          </div>
+
+          <div class="card">
+            <div class="icon" aria-hidden="true">✅</div>
+            <h3>Guarantee it</h3>
+            <p>Simple pledge: if it looks half-full, we replace it. Easy policy, strong trust builder.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="products">
+      <div class="container">
+        <div class="section-hd">
+          <h2>Flavor lineup</h2>
+          <p>Start with a tight set: 2–3 spicy flavors + 1–2 better-for-you options, then expand.</p>
+        </div>
+
+        <div class="products">
+          <div class="card prod">
+            <div>
+              <h3>Heat Line (Taki-style)</h3>
+              <p>Bold, loud, teen-first flavors with serious kick.</p>
+              <ul class="list">
+                <li><span class="check">✓</span> <span><b>Volcano Lime</b> — tangy heat with citrus bite</span></li>
+                <li><span class="check">✓</span> <span><b>Smoky Chili</b> — deep pepper + smoky finish</span></li>
+                <li><span class="check">✓</span> <span><b>Sweet Heat Mango</b> — sweet up front, spicy after</span></li>
+              </ul>
+            </div>
+            <div class="shot" aria-label="Heat line preview">
+              <div class="tag hot">🔥 Heat</div>
+              <div class="flavor">
+                <b>Volcano Lime</b>
+                <span>“All Flair.” No air.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card prod">
+            <div>
+              <h3>Better-for-You Line</h3>
+              <p>Still fun. Cleaner ingredients and positioning.</p>
+              <ul class="list">
+                <li><span class="check">✓</span> <span><b>Baked Crunch</b> — lighter texture, less greasy</span></li>
+                <li><span class="check">✓</span> <span><b>Simple Sea Salt</b> — minimal ingredients, big crunch</span></li>
+                <li><span class="check">✓</span> <span><b>Protein Pop</b> — optional: a higher-protein snack format</span></li>
+              </ul>
+            </div>
+            <div class="shot" aria-label="Better-for-you preview">
+              <div class="tag fit">🌿 Better</div>
+              <div class="flavor">
+                <b>Baked Crunch</b>
+                <span>Same full-bag promise.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px" class="card">
+          <h3 style="margin-top:0">Packaging strategy to control cost</h3>
+          <p style="margin-bottom:10px">
+            If your current reference bag is 3.25 oz but looks half-full, you have two viable strategies:
+          </p>
+          <div class="grid-3">
+            <div class="card" style="padding:14px">
+              <h3 style="margin:0 0 6px">Option A: Right-size the bag</h3>
+              <p>Use a slightly smaller bag that still feels premium, then fill it properly. Lower packaging waste + lower product needed.</p>
+            </div>
+            <div class="card" style="padding:14px">
+              <h3 style="margin:0 0 6px">Option B: Keep size, increase fill</h3>
+              <p>Stronger “wow” factor, but COGS rises. Best if your pricing supports a premium position.</p>
+            </div>
+            <div class="card" style="padding:14px">
+              <h3 style="margin:0 0 6px">Recommended start</h3>
+              <p>Right-size packaging first, then A/B test at local stores: “full 3.25 oz” vs “bigger bag, bigger wow.”</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stores">
+      <div class="container">
+        <div class="section-hd">
+          <h2>Get into local stores</h2>
+          <p>Start with independents: convenience stores, delis, small groceries, barbershops, and snack-heavy spots.</p>
+        </div>
+
+        <div class="two">
+          <div class="card">
+            <h3 style="margin-top:0">Store pitch (simple)</h3>
+            <ul class="list">
+              <li><span class="check">✓</span> <span><b>Hook:</b> “Our bags are actually full. Customers notice instantly.”</span></li>
+              <li><span class="check">✓</span> <span><b>Proof:</b> window + fill-line + replacement pledge</span></li>
+              <li><span class="check">✓</span> <span><b>Offer:</b> 1 free display box + sampling day</span></li>
+              <li><span class="check">✓</span> <span><b>Terms:</b> wholesale price + suggested retail + reorder cadence</span></li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-top:0">Store locator (placeholder)</h3>
+            <p>For launch, list stores here manually. Later you can swap this for a real map integration.</p>
+
+            <div style="margin-top:10px; display:grid; gap:10px">
+              <div class="card" style="padding:12px; background: rgba(17,28,51,.42)">
+                <b>Coming soon:</b> Local partner stores
+                <div style="color:var(--muted); font-weight:650; margin-top:4px">Add your first locations as you sign them.</div>
+              </div>
+
+              <a class="btn" href="#notify" style="justify-content:flex-start">Get notified when stores go live</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="notify">
+      <div class="container">
+        <div class="section-hd">
+          <h2>Launch updates</h2>
+          <p>Collect emails now. This page saves submissions to the visitor’s browser (demo). Hook it to your email provider later.</p>
+        </div>
+
+        <div class="two">
+          <div class="card">
+            <h3 style="margin-top:0">Join the waitlist</h3>
+            <form id="waitlistForm">
+              <div class="form-row">
+                <input type="text" name="name" placeholder="Name" autocomplete="name" required />
+              </div>
+              <div class="form-row" style="margin-top:10px">
+                <input type="email" name="email" placeholder="Email" autocomplete="email" required />
+              </div>
+              <div class="form-row" style="margin-top:10px">
+                <select name="interest" required>
+                  <option value="" disabled selected>Interested in…</option>
+                  <option>Heat Line (spicy)</option>
+                  <option>Better-for-you</option>
+                  <option>Both</option>
+                </select>
+              </div>
+
+              <div class="form-row" style="margin-top:12px">
+                <button class="btn primary" type="submit">Notify me</button>
+                <button class="btn" type="button" id="viewLeadsBtn">View saved signups</button>
+              </div>
+
+              <p class="fine" style="margin:12px 0 0">
+                Demo storage: saves to this device only. For real launch: connect to Mailchimp/Klaviyo/ConvertKit or a simple form endpoint.
+              </p>
+            </form>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-top:0">Brand copy (ready to use)</h3>
+            <p style="margin-bottom:12px">
+              <b>Headline:</b> “No Air. All Chips.”<br/>
+              <b>Subhead:</b> “The bag that doesn’t scam you.”<br/>
+              <b>One-liner:</b> “Bag Full of Chips delivers what the bag looks like — chips you can actually see.”
+            </p>
+            <div class="card" style="padding:12px; background: rgba(17,28,51,.42)">
+              <b>Tagline ideas</b>
+              <div style="color:var(--muted); font-weight:650; margin-top:6px; line-height:1.7">
+                • “All Flair. No Air.”<br/>
+                • “What you see is what you snack.”<br/>
+                • “Full bag energy.”<br/>
+                • “Pay for chips, not oxygen.”
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-hd">
+          <h2>FAQ</h2>
+          <p>Drop these on your site to answer the obvious objections fast.</p>
+        </div>
+
+        <details>
+          <summary>How do you prove the bag is full before I buy?</summary>
+          <p>We design packaging with a clear viewing window (or transparent bottom) plus a printed fill-line. If it doesn’t match the promise, we replace it.</p>
+        </details>
+
+        <details>
+          <summary>Won’t a fuller bag cost more?</summary>
+          <p>Yes, if you keep a large package and simply add more chips. That’s why we recommend right-sizing packaging first, then testing a premium “bigger bag, bigger wow” option.</p>
+        </details>
+
+        <details>
+          <summary>Are you spicy only?</summary>
+          <p>No. We start with a Heat Line (Taki-style) and a Better-for-You line, both with the full-bag promise.</p>
+        </details>
+
+        <details>
+          <summary>Where can I buy?</summary>
+          <p>Start local with independent stores, then expand. Add your first store partners under “Local Stores” and open online ordering later.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px">
+            <div class="logo" aria-hidden="true"></div>
+            <div>
+              <b style="color:var(--text)">Bag Full of Chips</b><br/>
+              <span class="fine">No Air. All Chips.</span>
+            </div>
+          </div>
+          <p class="fine" style="margin-top:10px">
+            Demo site HTML. Replace placeholders (store list, contact email, legal) when you’re ready.
+          </p>
+        </div>
+
+        <div>
+          <b style="color:var(--text)">Quick links</b>
+          <div style="display:grid; gap:8px; margin-top:10px">
+            <a href="#promise" style="text-decoration:none; color:var(--muted); font-weight:800">The Promise</a>
+            <a href="#products" style="text-decoration:none; color:var(--muted); font-weight:800">Flavors</a>
+            <a href="#stores" style="text-decoration:none; color:var(--muted); font-weight:800">Local Stores</a>
+            <a href="#notify" style="text-decoration:none; color:var(--muted); font-weight:800">Waitlist</a>
+          </div>
+        </div>
+
+        <div>
+          <b style="color:var(--text)">Contact</b>
+          <p class="fine" style="margin-top:10px">
+            Email: <span style="color:var(--text)">you@yourdomain.com</span><br/>
+            Instagram/TikTok: <span style="color:var(--text)">@bagfullofchips</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="fine" style="margin-top:16px; opacity:.85">
+        © <span id="year"></span> Bag Full of Chips. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div style="width:18px; height:18px; border-radius:6px; background: rgba(34,197,94,.18); border:1px solid rgba(34,197,94,.35); display:grid; place-items:center; color:rgba(34,197,94,.95); font-weight:1000;">✓</div>
+    <div>
+      <b id="toastTitle">Saved</b>
+      <span id="toastMsg">You’re on the list.</span>
+    </div>
+  </div>
+
+  <script>
+    // Mobile menu toggle
+    const header = document.getElementById('header');
+    const menuBtn = document.getElementById('menuBtn');
+    const mobilePanel = document.getElementById('mobilePanel');
+
+    function setMenu(open){
+      header.setAttribute('data-open', open ? 'true' : 'false');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    if(menuBtn){
+      menuBtn.addEventListener('click', () => {
+        const isOpen = header.getAttribute('data-open') === 'true';
+        setMenu(!isOpen);
+      });
+      mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    }
+
+    // Chip dots in window (visual demo)
+    const chipsGrid = document.getElementById('chipsGrid');
+    if (chipsGrid) {
+      const count = 28;
+      for (let i = 0; i < count; i++) {
+        const d = document.createElement('div');
+        d.className = 'chip';
+        const r = (Math.random() * 16 - 8).toFixed(1);
+        d.style.setProperty('--r', r + 'deg');
+        chipsGrid.appendChild(d);
+      }
+    }
+
+    // Toast helper
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMsg = document.getElementById('toastMsg');
+    let toastTimer = null;
+
+    function showToast(title, msg){
+      toastTitle.textContent = title;
+      toastMsg.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    // Waitlist demo (localStorage)
+    const form = document.getElementById('waitlistForm');
+    const viewBtn = document.getElementById('viewLeadsBtn');
+    const LS_KEY = 'bfoc_waitlist';
+
+    function getLeads(){
+      try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
+      catch(e){ return []; }
+    }
+    function setLeads(leads){
+      localStorage.setItem(LS_KEY, JSON.stringify(leads));
+    }
+
+    if(form){
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fd = new FormData(form);
+        const lead = {
+          name: (fd.get('name') || '').toString().trim(),
+          email: (fd.get('email') || '').toString().trim(),
+          interest: (fd.get('interest') || '').toString().trim(),
+          createdAt: new Date().toISOString()
+        };
+        if(!lead.name || !lead.email || !lead.interest){
+          showToast('Missing info', 'Please complete all fields.');
+          return;
+        }
+        const leads = getLeads();
+        leads.unshift(lead);
+        setLeads(leads);
+        form.reset();
+        showToast('Saved', 'You’re on the list.');
+      });
+    }
+
+    if(viewBtn){
+      viewBtn.addEventListener('click', () => {
+        const leads = getLeads();
+        if(!leads.length){
+          showToast('No signups yet', 'Add your first waitlist signup.');
+          return;
+        }
+        const lines = leads.slice(0, 8).map(l =>
+          `${l.name} — ${l.email} — ${l.interest} — ${new Date(l.createdAt).toLocaleString()}`
+        );
+        alert('Saved signups (demo):\n\n' + lines.join('\n'));
+      });
+    }
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
